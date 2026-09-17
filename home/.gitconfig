@@ -1,0 +1,7 @@
+[user]
+	name = codyflynn
+	email = codyflynn@gmail.com
+[email]
+	address = codyflynn@gmail.com
+[core]
+	excludesfile = /Users/codyflynn/.config/git/ignore

@@ -1,0 +1,3 @@
+config/zsh/keys2.zsh filter=git-crypt diff=git-crypt
+config/zsh/keys.zsh filter=git-crypt diff=git-crypt
+.gitattributes !filter !diff

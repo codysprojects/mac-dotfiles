@@ -1,0 +1,70 @@
+---
+# Every directory, or file under home/ in this repo gets symlinked into ~/
+# under the same name.
+
+
+- name: Discover home directories in repo
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/home"
+    file_type: directory
+  register: repo_home_dirs
+  tags: ["always"]
+
+- name: Discover home files in repo
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/home"
+    file_type: file
+    hidden: true
+  register: repo_home_files
+  tags: ["always"]
+
+
+#- name: Check current state of each home dotfile target
+#  ansible.builtin.stat:
+#    path: "{{ item.dest | expanduser }}"
+#  loop: "{{ dotfiles_symlinks | default([]) }}"
+#  loop_control:
+#    label: "{{ item.dest }}"
+#  register: home_target_stats
+
+#- name: Back up pre-existing real home dotfiles before symlinking
+#  ansible.builtin.command:
+#    cmd: >-
+#      mv {{ item.item.dest | expanduser }}
+#      {{ item.item.dest | expanduser }}.bak-{{ ansible_date_time.epoch }}
+#  loop: "{{ home_target_stats.results }}"
+#  loop_control:
+#    label: "{{ item.item.dest }}"
+#  when: item.stat.exists and not item.stat.islnk
+
+#- name: Symlink custom home dotfiles
+#  ansible.builtin.file:
+#    src: "{{ playbook_dir }}/{{ item.src }}"
+#    dest: "{{ item.dest | expanduser }}"
+#    state: link
+#    force: true
+#  loop: "{{ dotfiles_symlinks | default([]) }}"
+#  loop_control:
+#    label: "{{ item.dest }}"
+
+- name: Symlink repo home directories into ~/
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts.env.HOME }}/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_home_dirs.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  tags: symlink_home_dirs
+
+- name: Symlink repo home files into ~/
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts.env.HOME }}/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_home_files.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  tags: symlink_home_files

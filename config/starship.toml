@@ -1,0 +1,97 @@
+#right_format = """$kubernetes$git_branch$git_status"""
+format = """$os$username$hostname$directory$git_branch$git_status 
+$kubernetes$aws$gcloud
+$character
+"""
+[character] # The name of the module we are configuring is 'character'
+success_symbol = "[➜](bold green)"
+error_symbol = "[X](bold red)"
+#success_symbol = "╰⎯"
+#error_symbol = "╰⎯"
+
+#[env_var]
+#symbol = "╭╴"
+#variable = 'SHELL'
+#format = "$symbol"
+#disabled = false
+
+[directory]
+truncate_to_repo = false
+
+[os]
+format = '[$symbol](bold white) '   
+disabled = false
+
+[os.symbols]
+Windows = ' '
+Amazon = " "
+Ubuntu = ''
+Macos = '󰀵'
+Unknown = '󰠥'
+
+[username]
+style_user = "yellow bold"
+style_root = "red bold"
+format = "($style) "
+disabled = true
+show_always = true
+
+[hostname]
+ssh_only = false
+format =  "[$hostname](bold yellow) "
+disabled = false
+
+# Shows current git branch
+[git_branch]
+symbol = " "
+format = '[git $symbol$branch(:$remote_branch)]($style) '
+#format = 'on [$symbol$branch(:$remote_branch)]($style) ' #default
+style = 'bold green'
+
+
+# Shows current git status
+[git_status]
+disabled = false
+format = '[ $all_status $ahead_behind]($style) '
+style = 'bold green'
+conflicted = '🏳'
+up_to_date = ''
+untracked = ' '
+ahead = '⇡${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
+stashed = ' '
+modified = ' '
+staged = '[++\($count\)](green)'
+renamed = '襁 '
+deleted = ' '
+
+[aws]
+format = '[AWS $symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+style = 'bold blue'
+symbol = "  "
+[aws.region_aliases]
+ap-southeast-1 = 'apse1'
+us-east-1 = 'usea1'
+eu-west-1 = 'euwe1'
+
+[gcloud]
+format = '[GCP $account (\($region\))(\($project\))]($style) '
+
+[kubernetes]
+format = '[󱃾 k8s $context\($namespace\)]($style) '
+#format = 'on [⛵ ($user on )($cluster in )$context \($namespace\)](dimmed green) ' #Default
+style = 'bold purple'
+disabled = false
+
+[vagrant]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[ruby]
+disabled = true

@@ -1,0 +1,17 @@
+---
+# Makes the playbook self-updating: every run pulls this same repo down to a
+# known, fixed location so the rest of the tasks always symlink from
+# ~/git/dotfiles regardless of where the playbook was originally launched from.
+
+- name: Ensure ~/git directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/git"
+    state: directory
+    mode: "0755"
+
+- name: Clone or update dotfiles repo
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ ansible_facts.env.HOME }}/git/dotfiles"
+    version: "{{ dotfiles_branch | default('main') }}"
+    update: false

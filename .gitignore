@@ -1,0 +1,14 @@
+org-brew-list.txt
+config/herdr/herdr-client.log
+config/herdr/herdr-server.log
+config/herdr/release-notes.json
+config/herdr/session.json
+config/herdr/.plugins.lock
+config/herdr/*.sock
+
+# Machine-local overrides, never committed.
+config.local.yaml
+
+# Backups the playbook makes of pre-existing real files/dirs before
+# replacing them with a symlink.
+*.bak-*

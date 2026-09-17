@@ -1,0 +1,78 @@
+dotfiles_repo: git@github.com:codysprojects/mac-dotfiles.git
+dotfiles_branch: main
+
+# Every directory under config/ in this repo is symlinked into ~/.config
+# automatically (see tasks/config_symlinks.yml) - nothing to list here.
+
+# Individual files that live directly in $HOME instead of ~/.config, e.g.
+# ~/.zshrc. `src` is relative to the repo root, `dest` supports ~ expansion.
+dotfiles_symlinks: []
+#  - src: home/zshrc
+#    dest: ~/.zshrc
+
+# Taps needed before any of the casks/packages below can be installed.
+homebrew_taps: []
+
+homebrew_packages:
+  - herdr # Agent multiplexer that lives in your terminal
+  - awscli
+  - ca-certificates
+  - container-compose
+  - fd
+  - ffmpeg
+  - gh
+  - git
+  - git-crypt
+  - glab
+  - gnupg
+  - go
+  - iftop
+  - infracost # Cost estimates for Terraform, Terragrunt, and CloudFormation
+  - jq
+  - k9s
+  - kor # CLI tool to discover unused Kubernetes resources
+  - kube-linter
+  - kubectx
+#  - kubernetes-cli # Leaving out because this messes with Docker I think
+  - kustomize
+  - neovim
+  - node@22
+  - ollama
+  - openjdk
+  - openssl
+  - pandoc
+  - pi-coding-agent
+  - pipx
+  - python
+  - rg
+  - starship
+  - telnet
+  - terraform
+  - tldr # Quick readme pages with examples
+  - tree
+  - watch
+  - wget
+  - yamllint
+  - yq
+  - yt-dlp
+  - zsh-autosuggestions # may want to remove after playing with zsh settings
+  - zsh-syntax-highlighting 
+
+homebrew_casks:
+  - android-platform-tools
+  - android-studio
+  - basictex
+  - claude-code
+  - codex
+#  - docker # may not need 
+  - docker-desktop
+  - firefox
+  - font-hack-nerd-font
+  - gcloud-cli
+  - google-cloud-sdk
+  - keycastr
+  - kiro
+  - rar
+  - slack
+  - visual-studio-code
+  - wezterm

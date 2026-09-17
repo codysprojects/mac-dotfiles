@@ -1,0 +1,64 @@
+---
+# Every directory, or file under config/ in this repo gets symlinked into ~/.config
+# under the same name. Add a new tool's config by dropping its directory in
+# config/ and re-running the playbook.
+
+- name: Discover config directories in repo
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/config"
+    file_type: directory
+  register: repo_config_dirs
+  tags: ["always"]
+
+- name: Discover config files in repo
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/config"
+    file_type: file
+  register: repo_config_files
+  tags: ["always"]
+
+- name: Ensure ~/.config exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts.env.HOME }}/.config"
+    state: directory
+    mode: "0755"
+
+#- name: Check current state of each ~/.config target
+#  ansible.builtin.stat:
+#    path: "{{ ansible_facts.env.HOME }}/.config/{{ item.path | basename }}"
+#  loop: "{{ repo_config_dirs.files }}"
+#  loop_control:
+#    label: "{{ item.path | basename }}"
+#  register: config_target_stats
+#
+#- name: Back up pre-existing real ~/.config directories before symlinking
+#  ansible.builtin.command:
+#    cmd: >-
+#      mv {{ ansible_facts.env.HOME }}/.config/{{ item.item.path | basename }}
+#      {{ ansible_facts.env.HOME }}/.config/{{ item.item.path | basename }}.bak-{{ ansible_date_time.epoch }}
+#  loop: "{{ config_target_stats.results }}"
+#  loop_control:
+#    label: "{{ item.item.path | basename }}"
+#  when: item.stat.exists and not item.stat.islnk
+
+- name: Symlink repo config directories into ~/.config
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts.env.HOME }}/.config/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_config_dirs.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  tags: symlink_config_dirs
+
+- name: Symlink repo config files into ~/.config
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts.env.HOME }}/.config/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_config_files.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  tags: symlink_config_files
